@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='ASCII'?>
+<sci:Service xmlns:http_1="http://www.sonoasystems.com/schemas/2007/8/3/http/" xmlns:sci="http://www.sonoasystems.com/schemas/2007/8/3/sci/" name="sample">
+  <sci:Binding name="sample_target_Binding" type="http://schemas.xmlsoap.org/wsdl/http/">
+    <http:binding xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" verb="GET"/>
+    <sci:Operation name="public_timeline">
+      <http_1:operation location="/1/statuses/public_timeline.json" verb="${_flow.client.request.verb}"/>
+    </sci:Operation>
+  </sci:Binding>
+  <sci:Binding name="service_client_Binding" type="http://schemas.xmlsoap.org/wsdl/http/">
+    <http:binding xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" verb="GET"/>
+    <sci:Operation name="public_timeline">
+      <http_1:operation location="/1/statuses/public_timeline.json" verb="ANY"/>
+    </sci:Operation>
+  </sci:Binding>
+  <sci:ClientEndpoint binding="service_client_Binding" name="service_client">
+    <sci:MessageStatistics>enabled</sci:MessageStatistics>
+    <sci:PolicyStatistics>enabled</sci:PolicyStatistics>
+    <http_1:ClientAddress>
+      <http_1:VirtualHost ref="VH_1080"/>
+      <http_1:Path>/sample</http_1:Path>
+      <http_1:TransportBinding>
+        <http_1:AllowHttp10>true</http_1:AllowHttp10>
+        <http_1:AllowHttp11>true</http_1:AllowHttp11>
+        <http_1:KeepAliveConnections>true</http_1:KeepAliveConnections>
+        <http_1:RetainHeaders>true</http_1:RetainHeaders>
+        <http_1:Decompression enabled="true"/>
+      </http_1:TransportBinding>
+    </http_1:ClientAddress>
+    <sci:Operation mep="http://www.w3.org/2006/01/wsdl/in-out" name="public_timeline">
+      <http_1:ClassificationMethod>
+        <http_1:Location exactMatch="false"/>
+      </http_1:ClassificationMethod>
+      <sci:MessageStatistics>enabled</sci:MessageStatistics>
+      <sci:PolicyStatistics>enabled</sci:PolicyStatistics>
+      <sci:Route>
+        <sci:TargetEndpointRef ref="sample_target" operation="public_timeline"/>
+      </sci:Route>
+    </sci:Operation>
+  </sci:ClientEndpoint>
+  <sci:TargetEndpoint binding="sample_target_Binding" name="sample_target">
+    <sci:MessageStatistics>enabled</sci:MessageStatistics>
+    <sci:PolicyStatistics>enabled</sci:PolicyStatistics>
+    <http_1:TargetAddress>
+      <http_1:URI>http://api.twitter.com/1/</http_1:URI>
+      <http_1:TransportBinding>
+        <http_1:AllowHttp10>true</http_1:AllowHttp10>
+        <http_1:AllowHttp11>true</http_1:AllowHttp11>
+        <http_1:KeepAliveConnections>true</http_1:KeepAliveConnections>
+        <http_1:RetainHeaders>true</http_1:RetainHeaders>
+        <http_1:RetainQueryParams>false</http_1:RetainQueryParams>
+        <http_1:Decompression enabled="true"/>
+      </http_1:TransportBinding>
+    </http_1:TargetAddress>
+    <sci:Operation mep="http://www.w3.org/2006/01/wsdl/in-out" name="public_timeline">
+      <sci:MessageStatistics>enabled</sci:MessageStatistics>
+      <sci:PolicyStatistics>enabled</sci:PolicyStatistics>
+    </sci:Operation>
+  </sci:TargetEndpoint>
+</sci:Service>
