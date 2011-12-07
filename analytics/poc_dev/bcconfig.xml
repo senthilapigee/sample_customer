@@ -1,0 +1,567 @@
+<BCConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.sonoasystems.com/schemas/2008/10/3/bc/ schema/bcconfig.xsd"
+ xmlns="http://www.sonoasystems.com/schemas/2008/10/3/bc/">
+   <!-- Summary Element is used for configuring Summary Reports -->
+    <Summary>
+        <!--
+           Link represents one Link in a report
+           title=Label Name of a Link
+           enable=Enables a report to be viewed in UI
+        -->
+        <Link title="Summary" enable="true" id="1">
+            <!--Row element represents a row in UI. Row can have TrendChart/PieChart only-->
+            <Row>
+                <TrendChart title="API Usage Trend" type="trend" id="1">
+                    <!--Specify the duration for which Chart will display the data-->
+                    <Duration>7</Duration>
+                    <TimeUnit>Daily</TimeUnit>
+                    <FilterDimensions>
+                        <Dimension name="CustomDimension2">
+                            <Level name="CustomField1" excludeValues="'nl'"/>
+                        </Dimension>
+                    </FilterDimensions>
+                    <Measure>CustomField1</Measure>
+                    <Function>Unique</Function>
+                    <FactTable>CustomDimension2</FactTable>
+                    <TotalDisplayName label="Total Number Of Requests"/>
+                    <MinDisplayName label="Least Busy Day"/>
+                    <MaxDisplayName label="Most Busy Day"/>
+                </TrendChart>
+                <PieChart title="API Usage Distribution" type="pie" id="2">
+                    <Duration>7</Duration>
+                    <TimeUnit>Daily</TimeUnit>
+                    <XAxisDimension name="CustomDimension2" level="CustomField1"  excludeValues="'nl'"/>
+                    <FilterDimensions>
+                        <Dimension name="CustomDimension2">
+                            <Level name="CustomField1" excludeValues="'nl'"/>
+                        </Dimension>
+                    </FilterDimensions>
+                    <Measure>Usage</Measure>
+                    <Function>Sum</Function>
+                    <FactTable>Daily</FactTable>
+                    <TotalDisplayName label="Total Number Of Requests"/>
+                    <MinDisplayName label="Least Popular Domain"/>
+ <MaxDisplayName label="Most Popular Domain"/>
+                </PieChart>
+            </Row>
+            <Row>
+                <PieChart title="Developer Usage Distribution" type="pie" id="3">
+                    <Duration>7</Duration>
+                    <TimeUnit>Daily</TimeUnit>
+                    <XAxisDimension name="CustomDimension1" level="CustomField1"  excludeValues="'nl'"/>
+                    <FilterDimensions>
+                        <Dimension name="CustomDimension1">
+                            <Level name="CustomField1" excludeValues="'nl'"/>
+                        </Dimension>
+                    </FilterDimensions>
+                    <Measure>Usage</Measure>
+                    <Function>Sum</Function>
+                    <FactTable>Daily</FactTable>
+                    <TotalDisplayName label="Total Number Of Requests"/>
+                    <MinDisplayName label="Least Busy Organization"/>
+                    <MaxDisplayName label="Most Busy Organization"/>
+                </PieChart>
+                <TrendChart title="Unique Products Usage Trend" type="trend" id="4">
+                    <Duration>7</Duration>
+                    <TimeUnit>Daily</TimeUnit>
+                    <!--FilterDimensions>
+                        <Dimension name="CustomDimension1" level="CustomField1"></Dimension>
+                        <Dimension name="Target_Hierarchy">
+                            <Level includeValues="testDomain" name="domain"/>
+                        </Dimension>
+                    </FilterDimensions-->
+                    <Measure>CustomField1</Measure>
+                    <Function>Unique</Function>
+                    <FactTable>CustomDimension1</FactTable>
+                    <TotalDisplayName enable="false" label="Total"/>
+                    <MinDisplayName label="Least Unique Organization Count"/>
+                    <MaxDisplayName label="Highest Unique Organization Count"/>
+                </TrendChart>
+            </Row>
+        </Link>
+    </Summary>
+     <!-- Reports  Element is used to define Reports in UI. -->
+ <Reports>
+        <Report title="API Usage" enable="true" id="API Report">
+            <XAxisDimension title="APIs" name="CustomDimension1"/>
+            <DrillDown>
+                <Level title="API" name="CustomField3" visible="true" />
+                <Level title="Method" name="CustomField4" visible="true"/>
+
+            </DrillDown>
+            <Link title="Usage" enable="true" id="API Usage">
+                <FilterRow>
+
+
+<!--                    <ComboFilter label="SB" defaultOption="All SBs">
+                       <Dimension name="CustomDimension1">
+                            <Level title="Env" name="CustomField5" visible="true"/>
+                           <Level title="Bound" name="CustomField2" visible="true"/>
+                        </Dimension>
+                        <Dimension name="Client_Hierarchy">
+                            <Level title="NB" name="Endpoint" visible="true"/>
+                          </Dimension>
+  <Dimension name="Target_Hierarchy">
+                            <Level title="SB" name="Domain" visible="true"/>
+                          </Dimension>
+                    </ComboFilter> -->
+
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+<XAxisFilter enable="true"/>
+                </FilterRow>
+                <!-- Only combination of BarChart and TrendChart or DataView are supported for reports -->
+                <Row>
+                    <BarChart title="Usage Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Usage Trend Chart" type="trend" id="2"/>
+                </Row>
+                <!-- Measure defines the name of column specified in dbMapping.xml to be used -->
+                <Measure>Usage</Measure>
+                <!-- Function represents the Function defined in dbMapping.xml. It is used to define a sql function-->
+                <Function>Sum</Function>
+                <!-- YAxis defines title for y-axis -->
+                <YAxis title="No Of Messages"/>
+            </Link>
+            <Link title="Response Time" enable="true" id="API Response Time">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                   <ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+ <Row>
+                    <BarChart title="Response Time Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Response Time Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>ResponseTime</Measure>
+                <Function>ResponseTime,MinResponseTime</Function>
+                <YAxis title="Avg. Response Time (ms)" appendAtLabel="ms"/>
+            </Link>
+            <Link title="Error Rate" enable="true" id="API Error Rate">
+                <FilterRow>
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Error Rate Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Error Rate Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>Error</Measure>
+                <Function>ErrorRate</Function>
+                                <YAxis title="Error Percentage" appendAtLabel="%"/>
+            </Link>
+             <Link title="SLA" enable="true" id="API SLA">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                 <ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+                    <ComboFilter label="SLA" defaultValue="All" joinQuery="true">
+                        <Dimension name="ResponseTimeBand">
+                            <Level title="Band" name="BandValue" visible="true"/>
+                        </Dimension>
+                    </ComboFilter>
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="SLA Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+  <TrendChart title="SLA Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>Usage</Measure>
+                <Function>Sum</Function>
+                <YAxis title="SLA Percentage" appendAtLabel="%"/>
+            </Link>
+            <Link title="Message View" enable="true" id="API Message View">
+                <FilterRow>
+
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <DataView title="Message View" type="dataview" id="1">
+                      <!--
+                                                <FilterDimensions>
+                                <Dimension name="Target_Hierarchy">
+                                <Level name="Domain" includeValues="CacheEdgeDemoDomain"/>
+                                </Dimension>
+                        </FilterDimensions> -->
+                        <Table name="Fact">
+                            <!--
+                               Defines columns to be displayed in Data Table.
+                               To Add/Modify "name" attribute should match with column "uiname" in dbmapping.xml
+                               for other tables data , add attribute dimension="Table_UI_Name"
+                            -->
+                                <Column title="Request Receive Time" name="RequestReceivedTime">
+                                <DateFormatter datepattern="dd-MMM-yy HH:mm:ss"/>
+                             </Column>
+                            <Column title="Message Id" name="MessageExchangeID"/>
+                            <Column title="Client IP" name="ClientIP"/>
+                                            <Column title="Latency (ms)" name="TotalTimeTaken">
+                            <Rule><If>
+                                <Condition>
+                           <Operation>EQUALS</Operation><Argument><StringArg value="0"/></Argument><Argument><StringArg variable="_default"/></Argument>
+
+                                </Condition><Then>-1</Then>
+                                </If>
+ </Rule>
+                            </Column>
+                                <Column title="Error" name="Error"/>
+                             </Table>
+                    </DataView>
+                </Row>
+            </Link>
+            <!-- This is a custom report to display average of a CustomMeasure
+                 Right now custom measure is defined as "CustomMeasure1" from Daily Table.
+                 To change the custom measure , modify Measure element
+                 To enable this report modify attribute enable to "true"-->
+           <Link title="Custom Average" enable="true" id="API Custom Average">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Custom Average Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Custom Average Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>CustomMeasure1</Measure>
+                <Function>CustomAverage</Function>
+                <YAxis title="Average"/>
+            </Link>
+            <!-- This is a custom report to display sum of custom Measure.
+                 Right now custom measure is defined as "CustomMeasure1" from Daily Table.
+                 To change the custom measure , modify Measure element
+                 To enable this modify attribute enable to "true"-->
+            <Link title="Custom Sum" enable="true" id="API Custom Sum">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+ <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Custom Sum Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Custom Sum Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>CustomMeasure1</Measure>
+                <Function>Sum</Function>
+                <YAxis title="No Of Messages"/>
+            </Link>
+        </Report>
+
+        <Report title="Developer Usage" enable="true" id="Developer Report">
+            <XAxisDimension title="Developers" name="CustomDimension1"/>
+            <DrillDown>
+
+
+    <Level title="Organization" name="CustomField1" visible="true" excludeValues="'nl',''"/>
+  <Level title="Developers" name="CustomField2" visible="true" excludeValues="'nl',''"/>
+
+                                <Level title="Applications" name="CustomField5" visible="true" excludeValues="'nl',''"/>
+                <Level title="API" name="CustomField3" visible="true" excludeValues="'nl',''"/>
+<Level title="Method" name="CustomField4" visible="true" excludeValues="'nl',''"/>
+            </DrillDown>
+            <Link title="Usage" enable="true" id="Developer Usage">
+                <FilterRow>
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                            <Level title="Bound" name="CustomField2" visible="true"/>
+
+                        </Dimension>
+</ComboFilter>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <!-- Only combination of BarChart and TrendChart or DataView are supported for reports -->
+                <Row>
+                    <BarChart title="Usage Bar Chart" type="bar" id="1"/>
+                </Row>
+ <Row>
+                    <TrendChart title="Usage Trend Chart" type="trend" id="2"/>
+                </Row>
+                <!-- Measure defines the name of column specified in dbMapping.xml to be used -->
+                <Measure>Usage</Measure>
+                <!-- Function represents the Function defined in dbMapping.xml. It is used to define a sql function-->
+                <Function>Sum</Function>
+                <!-- YAxis defines title for y-axis -->
+                <YAxis title="No Of Messages"/>
+            </Link>
+            <Link title="Response Time" enable="true" id="Developer Response Time">
+                <FilterRow>
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                            <Level title="Bound" name="CustomField2" visible="true"/>
+
+                        </Dimension>
+</ComboFilter>
+
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Response Time Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Response Time Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>ResponseTime</Measure>
+                <Function>ResponseTime,MinResponseTime</Function>
+                <YAxis title="Avg. Response Time (ms)" appendAtLabel="ms"/>
+            </Link>
+            <Link title="Error Rate" enable="true" id="Developer Error Rate">
+               <FilterRow>
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                            <Level title="Bound" name="CustomField2" visible="true"/>
+
+                        </Dimension>
+</ComboFilter>
+
+
+
+
+
+
+
+    <!--ComboFilter label="Customer" defaultOption="All Customers">
+ <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Error Rate Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Error Rate Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>Error</Measure>
+                <Function>ErrorRate</Function>
+                                <YAxis title="Error Percentage" appendAtLabel="%"/>
+            </Link>
+             <Link title="SLA" enable="true" id="Developer SLA">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+                    <ComboFilter label="SLA" defaultValue="All" joinQuery="true">
+                        <Dimension name="ResponseTimeBand">
+                            <Level title="Band" name="BandValue" visible="true"/>
+                        </Dimension>
+                    </ComboFilter>
+                    <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="SLA Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="SLA Trend Chart" type="trend" id="2"/>
+ </Row>
+                <Measure>Usage</Measure>
+                <Function>Sum</Function>
+                <YAxis title="SLA Percentage" appendAtLabel="%"/>
+            </Link>
+            <Link title="Message View" enable="true" id="Developer Message View">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="false"/>
+                </FilterRow>
+                <Row>
+                    <DataView title="Message View" type="dataview" id="1">
+                      <!--
+                                                <FilterDimensions>
+                                <Dimension name="Target_Hierarchy">
+                                <Level name="Domain" includeValues="CacheEdgeDemoDomain"/>
+                                </Dimension>
+                        </FilterDimensions> -->
+                        <Table name="Fact">
+                            <!--
+                               Defines columns to be displayed in Data Table.
+                               To Add/Modify "name" attribute should match with column "uiname" in dbmapping.xml
+                               for other tables data , add attribute dimension="Table_UI_Name"
+                            -->
+                                <Column title="Request Receive Time" name="RequestReceivedTime">
+                                <DateFormatter datepattern="dd-MMM-yy HH:mm:ss"/>
+                             </Column>
+                            <Column title="Message Id" name="MessageExchangeID"/>
+                            <Column title="Client IP" name="ClientIP"/>
+                                            <Column title="Latency (ms)" name="TotalTimeTaken">
+                            <Rule><If>
+                                <Condition>
+                            <Operation>EQUALS</Operation><Argument><StringArg value="0"/></Argument><Argument><StringArg variable="_default"/></Argument>
+
+                                </Condition><Then>-1</Then>
+                                </If>
+ </Rule>
+                            </Column>
+                                <Column title="Error" name="Error"/>
+                             </Table>
+                    </DataView>
+                </Row>
+            </Link>
+            <!-- This is a custom report to display average of a CustomMeasure
+                 Right now custom measure is defined as "CustomMeasure1" from Daily Table.
+                 To change the custom measure , modify Measure element
+                 To enable this report modify attribute enable to "true"-->
+           <Link title="Custom Average" enable="true" id="Developer Custom Average">
+                <FilterRow>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+                    <XAxisFilter enable="false"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Custom Average Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Custom Average Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>CustomMeasure1</Measure>
+                <Function>CustomAverage</Function>
+                <YAxis title="Average"/>
+            </Link>
+            <!-- This is a custom report to display sum of custom Measure.
+                 Right now custom measure is defined as "CustomMeasure1" from Daily Table.
+                 To change the custom measure , modify Measure element
+                 To enable this modify attribute enable to "true"-->
+            <Link title="Custom Sum" enable="true" id="Developer Custom Sum">
+                <FilterRow>
+<ComboFilter label="Customer" defaultOption="All Customers">
+<Dimension name="CustomDimension2">
+                            <Level title="Env" name="CustomField1" visible="true"/>
+                        <Level title="TrafficDirection" name="CustomField2" visible="true"/>
+                        </Dimension>
+</ComboFilter>
+                    <!--ComboFilter label="Customer" defaultOption="All Customers">
+                        <Dimension name="CustomDimension1">
+                            <Level title="Organization" name="CustomField1" visible="true"/>
+                            <Level title="Client" name="CustomField2" visible="true"/>
+                        </Dimension>
+                    </ComboFilter-->
+ <XAxisFilter enable="true"/>
+                </FilterRow>
+                <Row>
+                    <BarChart title="Custom Sum Bar Chart" type="bar" id="1"/>
+                </Row>
+                <Row>
+                    <TrendChart title="Custom Sum Trend Chart" type="trend" id="2"/>
+                </Row>
+                <Measure>CustomMeasure1</Measure>
+                <Function>Sum</Function>
+                <YAxis title="No Of Messages"/>
+            </Link>
+        </Report>
+
+
+        <Report title="Admin" enable="true" id="Admin Report" type="admin">
+            <Link title="User Management" enable="true" id="User Management">
+                <Row>
+                    <UserManagement title="User Management" type="usermanagement" id="1"/>
+                </Row>
+            </Link>
+            <Link title="Node Statistics" enable="true" id="Node Statistics">
+                <Row>
+                    <NodeStats title="Node Statistics" type="nodestats" id="1"/>
+                </Row>
+            </Link>
+            <Link title="Database Statistics" enable="true" id="Database Statistics">
+                <Row>
+                    <DBStats title="DataBase Statistics" type="dbstats" id="1"/>
+                </Row>
+            </Link>
+            <Link title="Backup/Restore" enable="true" id="Backup Restore">
+                <Row>
+                    <BackUpRestore title="Backup/Restore" type="backuprestore" id="1"/>
+                </Row>
+            </Link>
+        </Report>
+    </Reports>
+</BCConfig>

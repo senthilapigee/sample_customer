@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:apigee="http://api.apigee.com/wadl/2010/07/" xmlns="http://wadl.dev.java.net/2009/02"
+	xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd
+             http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+
+	<resources base="https://api-test.san1.attcompute.com">
+<!-- Short Messaging Service (SMS) -->
+		<resource path="SendSMS">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<!--param name="address" type="xsd:string" style="query" required="true" default="tel:4089818261"/>
+				<param name="message" type="xsd:string" style="query" required="true" default="Hello World"/>
+				<param name="senderAddress" type="xsd:string" style="query" required="true" default="tel:4089818261"/>
+				<param name="senderName" type="xsd:string" style="query" required="true"/>
+				<param name="clientCorrelator" type="xsd:string" style="query" required="false"/-->
+
+			<method id="SendSMS" name="POST">
+				<apigee:tags>
+					<apigee:tag primary="true">SMS (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/rest/sms/2/messaging/outbox" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Send SMS]]></doc>
+				<request>
+                    <param name="Address" type="xsd:string" style="query" required="true" default="tel:4089818261"/>
+                    <param name="Message" type="xsd:string" style="query" required="true" default="Hello World"/>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/x-www-form-urlencoded"></param>
+                                </request>
+			</method>
+		</resource>
+
+		<resource path="GetSMSDeliveryStatus">
+			<param name="id" type="xsd:string" required="true" style="template"></param>
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="GetSMSDeliveryStatus" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">SMS (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/rest/sms/2/messaging/outbox/{Id}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get status of sent SMS]]></doc>
+			</method>
+		</resource>
+
+		<resource path="ReceiveSMS">
+			<param name="RegistrationID" type="xsd:string" required="true" style="template"></param>
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="ReceiveSMS" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">SMS (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example
+					url="/rest/sms/2/messaging/inbox" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Receive SMS]]></doc>
+
+				<request>
+                    <param name="RegistrationID" type="xsd:string" style="query" required="true" default="37367302"/>
+                                 </request>
+			</method>
+		</resource>
+	
+		
+<!-- Multimedia Messaging Service(MMS) API -->  
+		<resource path="SendMMS">
+			<param name="format" type="xsd:string" required="true" style="template" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<param name="address" type="xsd:string" style="query" required="true" default="tel:4089818261" />
+
+			<method id="SendMMS" name="POST">
+				<apigee:tags>
+					<apigee:tag primary="true">MMS (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/rest/mms/2/messaging/outbox" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[
+                    Send MMS
+                ]]></doc>
+				<request>
+                    <param name="Address" type="xsd:string" style="query" required="true" default="tel:4089818261"/>
+                    <param name="Subject" type="xsd:string" style="query" required="true" default="Attachment is being sent"/>
+                    <param name="Priority" type="xsd:string" style="query" required="true" default="High"/>
+					
+                </request>
+			</method>
+		</resource>
+
+		<resource path="GetMmsDeliveryStatus">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="GetMmsDeliveryStatus" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">MMS (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/rest/mms/2/messaging/outbox/{Id}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get status of MMS]]></doc>
+			</method>
+		</resource>
+
+		
+		<!-- WAPPUSH API -->
+		<resource path="WAPPUSH">
+			<param name="format" type="xsd:string" required="true" style="template" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<param name="address" type="xsd:string" style="query" required="true" default="tel:4089818261" />
+
+			<method id="SendMessage" name="POST">
+				<apigee:tags>
+					<apigee:tag primary="true">Wap (v1)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/1/messages/outbox/wapPush" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[
+                    Send Meassage 
+                ]]></doc>
+				<request>
+                    <param name="address" type="xsd:string" style="query" required="true" default="tel:7076915555"/>
+                    <param name="subject" type="xsd:string" style="query" required="true" default="Attachment is being sent"/>
+                    <param name="priority" type="xsd:string" style="query" required="true" default="High"/>
+					
+                                </request>
+			</method>
+		</resource>
+		<!-- Device API -->
+		<resource path="GetDeviceLocation">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<param name="requestedAccuracy" type="xsd:string" style="query" required="true" default="100" />
+
+			<method id="GetDeviceLocation" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Terminal Location (v1)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example
+					url="/1/devices/{device}/location" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the device location]]></doc>
+				<request>
+                    <param name="requestedAccuracy" type="xsd:string" style="query" required="true" default="100000"/>
+                                 </request>
+			</method>
+		</resource>
+
+
+		<resource path="GetDeviceInfo">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<method id="GetDeviceInfo" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Device Capability (v1)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/1/devices/{device}/info" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the device information]]></doc>
+			</method>
+		</resource>
+		
+		<!-- ChargeUserSinglePay -->
+		<resource path="ChargeUser(SinglePay)">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<method id="ChargeUserSinglePay" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="false" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Transactions" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Create a new NewSubscription for Payment using SignPayload]]></doc>
+				<request>
+					<param name="clientid" type="xsd:string" style="query" required="true" default="6afb07c45a225b0364d4deb222530e97"/>
+                    <param name="SignedPaymentDetail" type="xsd:string" style="query" required="true"/>
+					<param name="Signature" type="xsd:string" style="query" required="true"/>
+               </request>
+			</method>
+		</resource>
+		
+		<!-- ChargeUserSubscription -->
+		<resource path="ChargeUser(Subscription)">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<method id="ChargeUserSubscription" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="false" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Subscriptions" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Create a new NewSubscription for Payment using SignPayload]]></doc>
+				<request>
+					<param name="clientid" type="xsd:string" style="query" required="true" default="6afb07c45a225b0364d4deb222530e97"/>
+                    <param name="SignedPaymentDetail" type="xsd:string" style="query" required="true"/>
+					<param name="Signature" type="xsd:string" style="query" required="true"/>
+               </request>
+			</method>
+		</resource>
+		
+		<!--TransactionStatus-->
+		<resource path="TransactionStatus">
+			<param name="TransactionId" type="xsd:string" style="query" required="true" />
+			<param name="format" type="xsd:string" required="true" style="query" default="json">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<method id="TransactionStatus" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Transactions/TransactionAuthCode/{TransactionAuthCode}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the status of previously created transaction]]></doc>
+				<request>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+               </request>
+			</method>
+		</resource>
+		
+		<!--SubscriptionStatus-->
+		<resource path="SubscriptionStatus">
+			<param name="TransactionId" type="xsd:string" style="query" required="true" />
+			<param name="format" type="xsd:string" required="true" style="query" default="json">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<method id="SubscriptionStatus" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Subscriptions/SubscriptionAuthCode/{SubscriptionAuthCode}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the status of previously created subscription]]></doc>
+				<request>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+               </request>
+			</method>
+		</resource>
+		
+		<!--Refund Transaction JSON -->
+		<resource path="RefundTransaction">
+			<param name="TransactionId" type="xsd:string" style="query" required="true" />
+			<param name="format" type="xsd:string" required="true" style="query" default="json">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="RefundTransactionJSON" name="PUT">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Transactions/{TransactionId}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Refund the previously created transaction]]></doc>
+				<request>
+				<param name="Action" type="xsd:string" style="query" required="true" default="refund"/>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+               
+					<representation>
+						<apigee:payload><![CDATA[                               
+{
+"Action":"refund",
+"RefundReasonCode":1,
+"RefundReasonText":"Customer was not happy"
+}
+
+                 ]]></apigee:payload>
+					</representation>
+				</request>
+			</method>
+		</resource>
+		
+		<!--                          SubscriptionDetails JSON-->
+		<resource path="SubscriptionDetails">
+			<param name="TransactionId" type="xsd:string" style="query" required="true" />
+			<param name="format" type="xsd:string" required="true" style="query" default="json">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="SubcriptionDetailsJSON" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Subscriptions/{SubscriptionId}/Detail/{ConsumerId}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the Subcription Details ]]></doc>
+				<request>
+					<!-- <param name="ConsumerId" type="xsd:string" style="query" required="true" default="28689210-de34-43c2-8f4b-7d6fcf9698cc"/> -->
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+               </request>
+			</method>
+		</resource>
+		<!--                          GetNotification-->
+		<resource path="GetNotification">
+			<param name="TransactionId" type="xsd:string" style="query" required="true" />
+			<param name="format" type="xsd:string" required="true" style="query" default="json">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="Getnotifications" name="GET">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Notifications/{NotificationId}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the Subcription Details ]]></doc>
+				<request>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+               </request>
+			</method>
+		</resource>
+		<!--AcknowledgeNotification -->
+		<resource path="AcknowledgeNotification">
+			<param name="TransactionId" type="xsd:string" style="query" required="true" />
+			<param name="format" type="xsd:string" required="true" style="query" default="json">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+
+			<method id="AcknowledgeNotification" name="PUT">
+				<apigee:tags>
+					<apigee:tag primary="true">Payment (v2)</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="true" />
+				<apigee:example url="/Commerce/Payment/Rest/2/Notifications/{NotificationId}" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Acknowledge the notification ]]></doc>
+				<request>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+               </request>
+			</method>
+		</resource>
+		
+		<!-- Notary(SignPayload) -->
+		<resource path="SignPayload">
+			<param name="format" type="xsd:string" required="true" style="query" default="xml">
+				<option value="xml" />
+				<option value="json" />
+			</param>
+			<method id="SignPayload" name="POST">
+				<apigee:tags>
+					<apigee:tag primary="true">Notary</apigee:tag>
+				</apigee:tags>
+				<apigee:authentication required="false" />
+				<apigee:example url="/Security/Notary/Rest/1/SignedPayload" />
+				<doc title="" apigee:url="https://developer.tfoundary.com/docs"><![CDATA[Get the Sign Payload]]></doc>
+				<request>
+					<param name="Content-Type" type="xsd:string" style="header" required="true" default="application/json"></param>
+					<param name="Accept" type="xsd:string" style="header" required="true" default="application/json"></param>
+                    <param name="client_id" type="xsd:string" style="query" required="true" default="6afb07c45a225b0364d4deb222530e97"/>
+					<param name="client_secret" type="xsd:string" style="query" required="true" default="e17cc5ae9be7b04a"/>
+					<representation>
+						<apigee:payload><![CDATA[                               
+{
+"Amount":0.99,
+"Category":1,
+"Channel":"MOBILE_WEB",
+"Description":"better than level 1",
+"MerchantTransactionId":"skuser2985trx20111029175423",
+"MerchantProductId":"level2",
+"MerchantApplicationId":"Sudoku",
+"MerchantPaymentRedirectUrl":"http://somewhere.com/PurchaseFulfillment"
+}
+                 ]]></apigee:payload>
+					</representation>
+               </request>
+			</method>
+		</resource>
+		</resources>
+</application>
