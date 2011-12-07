@@ -1,5 +1,10 @@
 poc_dev:
     description: Development Environment
-
+target_endpoints:
+        sample_target: 
+        uri: https://api.twitter.com/2
 poc_staging:
      description: Staging Environment
+target_endpoints:
+        sample_target: 
+        uri: https://api.twitter.com/5
