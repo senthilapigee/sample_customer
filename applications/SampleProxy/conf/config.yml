@@ -1,8 +1,8 @@
 poc_dev:
-    target_endpoints: 
+     target_endpoints: 
         sample_target: 
         uri: http://api.twitter.com/2
 poc_staging:
-    target_endpoints:        
-	sample_target: 
+     target_endpoints:        
+        sample_target:  
         uri: http://api.twitter.com/5
